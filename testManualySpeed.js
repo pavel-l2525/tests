@@ -20,94 +20,103 @@ async function manualMove(el) {
     let cmd = el.id.split("Manual");
     let axis = cmd[0].toUpperCase();
     let type = cmd[1].toLowerCase();
+    let Mspeed = setSpeed();
     console.log(axis, type);
-  
+
+
+    function Mspeed.buttonList (true) {
     //Disbale button until response is back
-    if (type === "coord") {
-      if (
-        document.getElementById(cmd[0] + "Manual").value === "" ||
-        isNaN(document.getElementById(cmd[0] + "Manual").value)
-      ) {
-        console.log(document.getElementById(cmd[0] + "Manual").value);
-        return;
-      }
-      //el.setAttribute("disabled", true);
-      //el.innerHTML =
-      //  '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-      switch (axis) {
-        case "X":
-          distance =
-            Number(document.getElementById(cmd[0] + "Manual").value) * 200;
-          break;
-        case "Y":
-          distance =
-            Number(document.getElementById(cmd[0] + "Manual").value) * 200;
-          break;
-        case "Z":
-          distance =
-            Number(document.getElementById(cmd[0] + "Manual").value) *
-            787.40157480315;
-          break;
-        default:
-          distance = 0;
-          break;
-      }
-      console.log(distance);
-    }
-  
-    if (type === "jog") {
-      if (currentJoggingAxis != null) {
-        console.log("Clicking stop", currentJoggingAxis);
-        let stopButton =
-          document.getElementById(currentJoggingAxis + "ManualstopJog") || false;
-        if (stopButton != false) {
-          stopButton.click();
+      if (type === "coord") {
+        if (
+          document.getElementById(cmd[0] + "Manual").value === "" ||
+          isNaN(document.getElementById(cmd[0] + "Manual").value)
+        ) {
+          console.log(document.getElementById(cmd[0] + "Manual").value);
+          return;
         }
-        //document.getElementById(currentJoggingAxis + "ManualstopJog").click();
-      }
-      //setTimeout(function () {
-      currentJoggingAxis = cmd[0];
-      //Make button Stop Jog
-      console.log("making StopJog");
-      el.innerHTML = "<ion-icon name='close-outline'></ion-icon>";
-      el.className = "btn btn-danger";
-      el.id = cmd[0] + "ManualstopJog";
-      //}, 500);
-    } else if (type === "stopjog") {
-      //Make button Jog again
-      console.log("making Jog");
-      el.innerHTML = "<ion-icon name='pulse-outline'></ion-icon>";
-      el.className = "btn btn-outline-secondary";
-      el.id = cmd[0] + "ManualJog";
-    }
-  
-    if (type === "stopjog") {
-      let manualFetch = await fetch("http://localhost:3000/stopJog");
-      let response = await manualFetch.json();
-      console.log(response);
-    } else {
-      let manualFetch = await fetch("http://localhost:3000/manualMove", {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type: type,
-          axis: axis,
-          distance: distance,
-        }),
-      });
-      let response = await manualFetch.json();
-      // console.log("DID IT!!!");
-      console.log(response);
-      if (response.type === "coord" && response.status === "OK") {
-        el.removeAttribute("disabled");
-        el.innerHTML = '<ion-icon name="checkmark-circle-outline"></ion-icon>';
+        //el.setAttribute("disabled", true);
+        //el.innerHTML =
+        //  '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+        switch (axis) {
+          case "X":
+            distance =
+              Number(document.getElementById(cmd[0] + "Manual").value) * 200;
+            break;
+          case "Y":
+            distance =
+              Number(document.getElementById(cmd[0] + "Manual").value) * 200;
+            break;
+          case "Z":
+            distance =
+              Number(document.getElementById(cmd[0] + "Manual").value) *
+              787.40157480315;
+            break;
+          default:
+            distance = 0;
+            break;
+        }
+        console.log(distance);
       }
     }
-  }
+    
+    function Mspeed.buttonList (true){
   
+      if (type === "jog") {
+        if (currentJoggingAxis != null) {
+          console.log("Clicking stop", currentJoggingAxis);
+          let stopButton =
+            document.getElementById(currentJoggingAxis + "ManualstopJog") || false;
+          if (stopButton != false) {
+            stopButton.click();
+          }
+          //document.getElementById(currentJoggingAxis + "ManualstopJog").click();
+        }
+        //setTimeout(function () {
+        currentJoggingAxis = cmd[0];
+        //Make button Stop Jog
+        console.log("making StopJog");
+        el.innerHTML = "<ion-icon name='close-outline'></ion-icon>";
+        el.className = "btn btn-danger";
+        el.id = cmd[0] + "ManualstopJog";
+        //}, 500);
+      } else if (type === "stopjog") {
+        //Make button Jog again
+        console.log("making Jog");
+        el.innerHTML = "<ion-icon name='pulse-outline'></ion-icon>";
+        el.className = "btn btn-outline-secondary";
+        el.id = cmd[0] + "ManualJog";
+      }
+    }
+    
+    function Mspeed.buttonList (true){
+
+      if (type === "stopjog") {
+        let manualFetch = await fetch("http://localhost:3000/stopJog");
+        let response = await manualFetch.json();
+        console.log(response);
+      } else {
+        let manualFetch = await fetch("http://localhost:3000/manualMove", {
+          method: "post",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            type: type,
+            axis: axis,
+            distance: distance,
+          }),
+        });
+        let response = await manualFetch.json();
+        // console.log("DID IT!!!");
+        console.log(response);
+        if (response.type === "coord" && response.status === "OK") {
+          el.removeAttribute("disabled");
+          el.innerHTML = '<ion-icon name="checkmark-circle-outline"></ion-icon>';
+        }
+      }
+    }
+     
   /*
   *********************************************
   Manual Card END
